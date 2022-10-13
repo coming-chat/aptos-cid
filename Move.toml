@@ -1,0 +1,24 @@
+[package]
+name = 'aptos-cid'
+version = '1.0.0'
+license = "Apache-2.0"
+upgrade_policy = "compatible"
+
+#[dependencies.AptosFramework]
+#git = 'https://github.com/aptos-labs/aptos-core.git'
+#rev = 'main'
+#subdir = 'aptos-move/framework/aptos-framework'
+
+#[dependencies.AptosToken]
+#git = 'https://github.com/aptos-labs/aptos-core.git'
+#rev = 'main'
+#subdir = 'aptos-move/framework/aptos-token'
+
+[dependencies]
+AptosFramework = { local = "../aptos-core/aptos-move/framework/aptos-framework" }
+AptosToken = { local = "../aptos-core/aptos-move/framework/aptos-token" }
+
+[addresses]
+aptos_cid = "0x123"
+admin = "0x123"
+foundation = "0x123"
