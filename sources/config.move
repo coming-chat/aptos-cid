@@ -19,7 +19,7 @@ module aptos_cid::config {
 
     const CONFIG_KEY_ENABLED: vector<u8> = b"enabled";
     const CONFIG_KEY_ADMIN_ADDRESS: vector<u8> = b"admin_address";
-    const CONFIG_KEY_FOUNDATION_FUND_ADDRESS: vector<u8> = b"foundation_fund_address";
+    const CONFIG_KEY_FOUNDATION_ADDRESS: vector<u8> = b"foundation_address";
     const CONFIG_KEY_TYPE: vector<u8> = b"type";
     const CONFIG_KEY_CREATION_TIME_SEC: vector<u8> = b"creation_time_sec";
     const CONFIG_KEY_EXPIRATION_TIME_SEC: vector<u8> = b"expiration_time_sec";
@@ -129,7 +129,7 @@ module aptos_cid::config {
         set_v1(@aptos_cid, config_key_enabled(), &enabled)
     }
 
-    public entry fun set_foundation_fund_address(sign: &signer, addr: address) acquires ConfigurationV1 {
+    public entry fun set_foundation_address(sign: &signer, addr: address) acquires ConfigurationV1 {
         assert_signer_is_admin(sign);
         aptos_account::assert_account_is_registered_for_apt(addr);
 
@@ -170,7 +170,7 @@ module aptos_cid::config {
     }
 
     public fun config_key_foundation_fund_address(): String {
-        string::utf8(CONFIG_KEY_FOUNDATION_FUND_ADDRESS)
+        string::utf8(CONFIG_KEY_FOUNDATION_ADDRESS)
     }
 
     public fun config_key_type(): String {
@@ -319,7 +319,7 @@ module aptos_cid::config {
 
         assert!(foundation_fund_address() == signer::address_of(myself), 5);
         coin::register<AptosCoin>(rando);
-        set_foundation_fund_address(myself, signer::address_of(rando));
+        set_foundation_address(myself, signer::address_of(rando));
         assert!(foundation_fund_address() == signer::address_of(rando), 5);
 
         assert!(admin_address() == signer::address_of(myself), 6);
@@ -340,7 +340,7 @@ module aptos_cid::config {
         initialize_for_test(myself, aptos);
 
         assert!(foundation_fund_address() == signer::address_of(myself), 5);
-        set_foundation_fund_address(myself, signer::address_of(rando));
+        set_foundation_address(myself, signer::address_of(rando));
         assert!(foundation_fund_address() == signer::address_of(rando), 5);
     }
 
@@ -355,7 +355,7 @@ module aptos_cid::config {
         initialize_for_test(myself, aptos);
 
         assert!(foundation_fund_address() == signer::address_of(myself), 5);
-        set_foundation_fund_address(rando, signer::address_of(rando));
+        set_foundation_address(rando, signer::address_of(rando));
     }
 
     #[test(myself = @aptos_cid, rando = @0x266f, aptos = @0x1)]
