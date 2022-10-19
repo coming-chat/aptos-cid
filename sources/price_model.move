@@ -8,9 +8,7 @@ module aptos_cid::price_model {
     /// The later the cid is registered for, the more expensive it is per month.
     /// The curve is exponential, with every month costing more than the previous
     fun scale_price_for_months(price: u64, months: u64): u64 {
-        if (months == 0) {
-            return price
-        };
+        let months = months + 1;
 
         // price * sqrt(months)
         return price * sqrt(months * PRICE_SCALE) / sqrt(PRICE_SCALE)
@@ -79,22 +77,22 @@ module aptos_cid::price_model {
         // If the price is 10 APT, for 1 month, the price should be 10 APT, etc
         let prices_and_months = vector[
             MonthPricePair { months: 0, expected_price: 10 },
-            MonthPricePair { months: 1, expected_price: 10 },
-            MonthPricePair { months: 2, expected_price: 14 },
-            MonthPricePair { months: 3, expected_price: 17 },
-            MonthPricePair { months: 4, expected_price: 20 },
-            MonthPricePair { months: 5, expected_price: 22 },
-            MonthPricePair { months: 6, expected_price: 24 },
-            MonthPricePair { months: 7, expected_price: 26 },
-            MonthPricePair { months: 8, expected_price: 28 },
-            MonthPricePair { months: 9, expected_price: 30 },
-            MonthPricePair { months: 10, expected_price: 31 },
-            MonthPricePair { months: 11, expected_price: 33 },
-            MonthPricePair { months: 12, expected_price: 34 },
-            MonthPricePair { months: 24, expected_price: 48 },
-            MonthPricePair { months: 48, expected_price: 69 },
+            MonthPricePair { months: 1, expected_price: 14 },
+            MonthPricePair { months: 2, expected_price: 17 },
+            MonthPricePair { months: 3, expected_price: 20 },
+            MonthPricePair { months: 4, expected_price: 22 },
+            MonthPricePair { months: 5, expected_price: 24 },
+            MonthPricePair { months: 6, expected_price: 26 },
+            MonthPricePair { months: 7, expected_price: 28 },
+            MonthPricePair { months: 8, expected_price: 30 },
+            MonthPricePair { months: 9, expected_price: 31 },
+            MonthPricePair { months: 10, expected_price: 33 },
+            MonthPricePair { months: 11, expected_price: 34 },
+            MonthPricePair { months: 12, expected_price: 36 },
+            MonthPricePair { months: 24, expected_price: 50 },
+            MonthPricePair { months: 48, expected_price: 70 },
             MonthPricePair { months: 100, expected_price: 100 },
-            MonthPricePair { months: 112, expected_price: 105 },
+            MonthPricePair { months: 112, expected_price: 106 },
             MonthPricePair { months: 1200, expected_price: 346 },
         ];
 

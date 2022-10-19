@@ -94,7 +94,7 @@ module aptos_cid::test_helper {
         let user_balance_after = coin::balance<AptosCoin>(user_addr);
 
         let cid_price = price_model::price_for_cid_v1(registration_at_secs);
-        assert!(cid_price / config::octas() == 34, cid_price / config::octas());
+        assert!(cid_price / config::octas() == 36, cid_price / config::octas());
         expected_user_balance_after = user_balance_before - cid_price;
 
         test_utils::print_actual_expected(b"user_balance_after: ", user_balance_after, expected_user_balance_after, false);
