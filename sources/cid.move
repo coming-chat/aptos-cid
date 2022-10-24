@@ -252,6 +252,26 @@ module aptos_cid::cid {
         };
     }
 
+    /// Helper function for transfer cid nft
+    /// For receiver
+    public entry fun allow_direct_transfer(
+        account: &signer
+    ) {
+        token_helper::allow_direct_transfer(account)
+    }
+
+    /// Helper function for transfer cid nft
+    /// For sender
+    public entry fun cid_token_transfer(
+        from: &signer,
+        fully_qualified_cid: String,
+        to: address,
+    ) {
+        if (signer::address_of(from) != to) {
+            token_helper::token_transfer(from, fully_qualified_cid, to)
+        }
+    }
+
     public fun start_time_sec(): u64 acquires Genesis {
         borrow_global<Genesis>(@aptos_cid).start_time_sec
     }

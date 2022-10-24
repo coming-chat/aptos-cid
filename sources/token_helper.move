@@ -16,11 +16,51 @@ module aptos_cid::token_helper {
 
     /// The collection does not exist. This should never happen.
     const ECOLLECTION_NOT_EXISTS: u64 = 1;
-
+    const ETOKEN_INSUFFICIENT_BALANCE: u64 = 2;
+    const EREQUIRE_ALLOW_DIRECT_TRANSFER: u64 = 3;
 
     /// Tokens require a signer to create, so this is the signer for the collection
     struct CollectionCapabilityV1 has key, drop {
         capability: SignerCapability,
+    }
+
+    public fun allow_direct_transfer(
+        account: &signer
+    ) {
+        token::initialize_token_store(account);
+        token::opt_in_direct_transfer(account, true);
+    }
+
+    public fun token_transfer(
+        from: &signer,
+        fully_qualified_cid: String,
+        to: address,
+    ) acquires CollectionCapabilityV1 {
+        let creator = get_token_signer_address();
+        let token_data_id = token::create_token_data_id(
+            creator,
+            config::collection_name_v1(),
+            fully_qualified_cid
+        );
+        let token_property_version = token::get_tokendata_largest_property_version(
+            creator,
+            token_data_id
+        );
+        let token_id = token::create_token_id(
+            token_data_id,
+            token_property_version
+        );
+
+        assert!(
+            token::has_token_store(to),
+            EREQUIRE_ALLOW_DIRECT_TRANSFER,
+        );
+        assert!(
+            token::balance_of(signer::address_of(from), token_id) > 0,
+            ETOKEN_INSUFFICIENT_BALANCE,
+        );
+
+        token::transfer(from, token_id, to, 1);
     }
 
     public fun get_token_signer_address(): address acquires CollectionCapabilityV1 {

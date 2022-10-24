@@ -6,6 +6,7 @@ module aptos_cid::cid_e2e_tests {
     use aptos_cid::cid;
     use aptos_cid::test_helper;
     use aptos_cid::time_helper::months_to_seconds;
+    use aptos_cid::token_helper;
 
     #[test(myself = @aptos_cid, user = @0x077, aptos = @0x1, rando = @0x266f, foundation = @0xf01d)]
     fun happy_cid_e2e_test(
@@ -178,5 +179,68 @@ module aptos_cid::cid_e2e_tests {
         let expected_expiration_time = expiration_time_sec + months_to_seconds(24);
 
         test_helper::renew_cid(user, test_helper::test_cid(), signer::address_of(rando), expected_expiration_time);
+    }
+
+    #[test(myself = @aptos_cid, user = @0x077, aptos = @0x1, rando = @0x266f, foundation = @0xf01d)]
+    fun owner_can_transfer_cid_nft_e2e_test(
+        myself: &signer,
+        user: signer,
+        aptos: signer,
+        rando: signer,
+        foundation: signer
+    ) {
+        let users = test_helper::e2e_test_setup(myself, user, &aptos, rando, &foundation);
+        let user = vector::borrow(&users, 0);
+        let rando = vector::borrow(&users, 1);
+
+        // Register the cid, and set its address
+        test_helper::register_cid(user, test_helper::test_cid(), test_helper::register_after_one_year_secs(), test_helper::fq_cid(), 1);
+        test_helper::set_cid_address(user, test_helper::test_cid(), signer::address_of(rando));
+
+        token_helper::allow_direct_transfer(rando);
+        token_helper::token_transfer(user, test_helper::fq_cid(), signer::address_of(rando));
+
+        test_helper::set_cid_address(rando, test_helper::test_cid(), signer::address_of(user));
+    }
+
+    #[test(myself = @aptos_cid, user = @0x077, aptos = @0x1, rando = @0x266f, foundation = @0xf01d)]
+    #[expected_failure(abort_code = 3)]
+    fun owner_can_not_transfer_cid_nft_e2e_test(
+        myself: &signer,
+        user: signer,
+        aptos: signer,
+        rando: signer,
+        foundation: signer
+    ) {
+        let users = test_helper::e2e_test_setup(myself, user, &aptos, rando, &foundation);
+        let user = vector::borrow(&users, 0);
+        let rando = vector::borrow(&users, 1);
+
+        // Register the cid, and set its address
+        test_helper::register_cid(user, test_helper::test_cid(), test_helper::register_after_one_year_secs(), test_helper::fq_cid(), 1);
+        test_helper::set_cid_address(user, test_helper::test_cid(), signer::address_of(rando));
+
+        token_helper::token_transfer(user, test_helper::fq_cid(), signer::address_of(rando));
+    }
+
+    #[test(myself = @aptos_cid, user = @0x077, aptos = @0x1, rando = @0x266f, foundation = @0xf01d)]
+    #[expected_failure(abort_code = 2)]
+    fun not_owner_can_not_transfer_cid_nft_e2e_test(
+        myself: &signer,
+        user: signer,
+        aptos: signer,
+        rando: signer,
+        foundation: signer
+    ) {
+        let users = test_helper::e2e_test_setup(myself, user, &aptos, rando, &foundation);
+        let user = vector::borrow(&users, 0);
+        let rando = vector::borrow(&users, 1);
+
+        // Register the cid, and set its address
+        test_helper::register_cid(user, test_helper::test_cid(), test_helper::register_after_one_year_secs(), test_helper::fq_cid(), 1);
+        test_helper::set_cid_address(user, test_helper::test_cid(), signer::address_of(rando));
+
+        token_helper::allow_direct_transfer(rando);
+        token_helper::token_transfer(rando, test_helper::fq_cid(), signer::address_of(rando));
     }
 }

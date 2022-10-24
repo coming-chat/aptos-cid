@@ -50,11 +50,9 @@ module aptos_cid::config {
 
         set_is_enabled(owner, true);
 
-        // TODO: SET THIS TO SOMETHING REAL
         set_tokendata_description(owner, string::utf8(b"This is an official ComingChat Cid Service"));
         set_tokendata_url_prefix(owner, string::utf8(b"https://coming.chat/api/v1/metadata/"));
 
-        // TODO: SET REAL VALUES FOR DOMAIN PRICES
         // 10 APT
         set_cid_price(owner, 10 * octas());
 
