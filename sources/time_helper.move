@@ -7,7 +7,7 @@ module aptos_cid::time_helper {
     ///  Time >---|-----------------6|------------------12|-----------------18|------------------24|--Expiration-->
     ///                                                                       |-Renewable_Duration-|
 
-    const SECONDS_PER_MONTH: u64 = 60 * 60 * 24 * 7 * 30;
+    const SECONDS_PER_MONTH: u64 = 60 * 60 * 24 * 30;
 
     public fun validity_duration_seconds(): u64 {
         // two years

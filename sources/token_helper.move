@@ -87,9 +87,8 @@ module aptos_cid::token_helper {
             capability: token_signer_cap,
         });
 
-        // TODO: Set up real NFT collection
         let description = string::utf8(b".aptos names from the ComingChat Cid");
-        let collection_uri = string::utf8(b"https://coming.chat");
+        let collection_uri = string::utf8(b"https://aptoscid.coming.chat");
         // This turns off supply tracking, which allows for parallel execution
         let maximum_supply = 0;
         // collection description mutable: true
