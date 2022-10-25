@@ -70,7 +70,7 @@ module aptos_cid::price_model {
     }
 
     #[test(myself = @aptos_cid, framework = @0x1)]
-    fun test_scale_price_for_years(myself: &signer, framework: &signer) {
+    fun test_scale_price_for_months(myself: &signer, framework: &signer) {
         use aptos_framework::account;
         use std::signer;
         use std::vector;
