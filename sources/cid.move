@@ -252,7 +252,7 @@ module aptos_cid::cid {
         };
     }
 
-    /// Helper function for transfer cid nft
+    /// Helper function for transfer any nft
     /// For receiver
     public entry fun allow_direct_transfer(
         account: &signer
@@ -269,6 +269,30 @@ module aptos_cid::cid {
     ) {
         if (signer::address_of(from) != to) {
             token_helper::token_transfer(from, fully_qualified_cid, to)
+        }
+    }
+
+    /// Helper function for transfer any nft
+    /// For sender
+    public entry fun token_trasfer(
+        from: &signer,
+        creator: address,
+        collection_name: String,
+        token_name: String,
+        token_property_version: u64,
+        to: address,
+        amount: u64,
+    ) {
+        if (signer::address_of(from) != to) {
+            token_helper::transfer_with_opt_in(
+                from,
+                creator,
+                collection_name,
+                token_name,
+                token_property_version,
+                to,
+                amount
+            )
         }
     }
 

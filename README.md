@@ -45,8 +45,9 @@ price = base_price * sqrt(register_at_month)
    and the validity period is increased by 2 years.
 - (4) `set_cid_address`(user): rebind aptos-cid and address.
 - (5) `clear_cid_address`(user): unbind aptos-cid and address.
-- (6) `allow_direct_transfer`(user): allow sender transfer cid nft to self.
+- (6) `allow_direct_transfer`(user): allow sender transfer any nft to self.
 - (7) `cid_token_transfer`(user): send cid nft to receiver.
+- (8) `token_transfer`(user): send any nft to receiver.
 
 **config module**:
 - (1) `set_is_enabled`(owner/admin): whether to stop aptos-cid `register` and `renew`.
